@@ -1189,7 +1189,7 @@ export const ptPT = {
       code: 'Código de verificação',
       placeholder: 'Por favor, insira',
       send: 'Enviar',
-      tip: 'Por favor, insira o número de telefone celular correto！',
+      tip: 'insira o número de telefone celular correto！',
       sec: 'Segundo',
     },
     MuiPagination: {
