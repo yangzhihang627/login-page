@@ -8,21 +8,21 @@ import Pagination from '@material-ui/lab/Pagination'
 import Rating from '@material-ui/lab/Rating'
 import Autocomplete from '@material-ui/lab/Autocomplete'
 import TextField from '@material-ui/core/TextField'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import AccountCircle from '@material-ui/icons/AccountCircle'
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
 import * as locales from '@material-ui/core/locale'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import { green } from '@material-ui/core/colors'
+import InputStart from './InputStart'
+import InputEnd, { phoneRegExp } from './InputEnd'
+import Message from './Message'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     flexGrow: 1,
     textAlign: 'center',
-  },
-  paper: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
   },
   logo: {
     display: 'inline-block',
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   form: {
     padding: '8px 20px'
   },
-}))
+})
 
 const CssTextField = withStyles({
   root: {
@@ -63,20 +63,36 @@ const CssButton = withStyles({
 function App() {
   const classes = useStyles()
   const [locale, setLocale] = useState('zhCN')
+  const [phone, setPhone] = useState('')
+  const [code, setCode] = useState('')
+  const [open, setOpen] = useState(false)
 
-  const handleChange = (event) => {
-    setLocale(event.target.value)
+  const changeLocale = evt => {
+    setLocale(evt.target.value)
+  }
+
+  const changePhone = evt => {
+    setPhone(evt.target.value)
+  }
+
+  const changeCode = evt => {
+    setCode(evt.target.value)
+  }
+
+  const clickLogin = () => {
+    if (!phoneRegExp.test(phone)) {
+      setOpen(true)
+    }
   }
 
   return (
     <Grid container justify="center" spacing={0} className={classes.root}>
+      <Message show={open} />
       <Grid  item xs={12} sm={4}>
         <div className={classes.country}>
           <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
             value={locale}
-            onChange={handleChange}
+            onChange={changeLocale}
             disableUnderline
           >
             <MenuItem value={'zhCN'}>🇨🇳 CN</MenuItem>
@@ -87,7 +103,7 @@ function App() {
         <div className={classes.form}>
           <CssTextField
             label="手机号"
-            placeholder="Placeholder"
+            placeholder="请输入..."
             fullWidth
             margin="normal"
             InputLabelProps={{
@@ -95,12 +111,17 @@ function App() {
             }}
             variant="outlined"
             size="small"
+            InputProps={{
+              startAdornment: <InputStart />,
+            }}
+            value={phone}
+            onChange={changePhone}
           />
         </div>
         <div className={classes.form}>
           <CssTextField
             label="验证码"
-            placeholder="Placeholder"
+            placeholder="请输入..."
             fullWidth
             margin="normal"
             InputLabelProps={{
@@ -108,6 +129,11 @@ function App() {
             }}
             variant="outlined"
             size="small"
+            InputProps={{
+              endAdornment: <InputEnd phone={phone} />,
+            }}
+            value={code}
+            onChange={changeCode}
           />
         </div>
         <div className={classes.form}>
@@ -115,6 +141,7 @@ function App() {
             variant='contained' 
             color='primary'
             fullWidth
+            onClick={clickLogin}
           >Login</CssButton>
         </div>
       </Grid>
