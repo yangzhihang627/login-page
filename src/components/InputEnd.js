@@ -29,7 +29,7 @@ function InputEnd({ phone }) {
     setTimeout(() => {
       if (num > 0) {
         num--
-        setText(`${num}${theme.props.Login.sec}`)
+        setText(`${num} ${theme.props.Login.sec}`)
         countdown(num)
       } else {
         setText(theme.props.Login.send)
@@ -40,7 +40,7 @@ function InputEnd({ phone }) {
 
   const clickSend = (num) => {
     if (phoneRegExp.test(num)) {
-      setText(`${second}${theme.props.Login.sec}`)
+      setText(`${second} ${theme.props.Login.sec}`)
       setFlag(true)
       countdown(second)
     } else {
