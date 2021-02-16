@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import Snackbar from '@material-ui/core/Snackbar'
 import MuiAlert from '@material-ui/lab/Alert'
+import { useTheme } from '@material-ui/core/styles'
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />
 }
 
-function Message({ show }) {
+function Toaster({ show, handleClose, message }) {
   const [open, setOpen] = useState(false)
-
-  const handleClose = (_, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setOpen(false)
-  }
+  const [text, setText] = useState('')
+  const theme = useTheme()
 
   useEffect(() => {
     setOpen(show)
-  }, [show])
+    if (message) {
+      setText(message)
+    } else {
+      setText(theme.props.Login.tip)
+    }
+  }, [show, message, theme])
 
   return (
     <Snackbar 
@@ -28,10 +29,10 @@ function Message({ show }) {
       onClose={handleClose}
     >
       <Alert onClose={handleClose} severity="error">
-        请输入正确的手机号！
+        {text}
       </Alert>
     </Snackbar>
   )
 }
 
-export default Message
+export default Toaster

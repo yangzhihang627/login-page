@@ -1,17 +1,16 @@
 import React, { useState } from 'react'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { createMuiTheme, ThemeProvider, makeStyles, withStyles } from '@material-ui/core/styles'
 import logoImage from './static/logo.png'
 import TextField from '@material-ui/core/TextField'
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
-import * as locales from '@material-ui/core/locale'
+import * as locales from './locale'
 import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 import { green } from '@material-ui/core/colors'
 import InputStart from './components/InputStart'
 import InputEnd, { phoneRegExp } from './components/InputEnd'
-import Message from './components/Message'
+import Toaster from './components/Toaster'
 
 const useStyles = makeStyles({
   root: {
@@ -49,6 +48,7 @@ const CssButton = withStyles({
     '&:hover': {
       backgroundColor: green[700],
     },
+    textTransform: 'none',
   },
 })(Button)
 
@@ -77,10 +77,14 @@ function App() {
     }
   }
 
+  const localize = (type) => {
+    return locales[locale].props.Login[type]
+  }
+
   return (
     <ThemeProvider theme={(outerTheme) => createMuiTheme(outerTheme, locales[locale])}>
       <Grid container justify="center" spacing={0} className={classes.root}>
-        <Message show={open} />
+        <Toaster show={open}  handleClose={() => setOpen(false)} />
         <Grid  item xs={12} sm={4}>
           <div className={classes.country}>
             <Select
@@ -95,8 +99,8 @@ function App() {
           <div className={classes.logo} />
           <div className={classes.form}>
             <CssTextField
-              label="手机号"
-              placeholder="请输入..."
+              label={localize('phone')}
+              placeholder={localize('placeholder')}
               fullWidth
               margin="normal"
               InputLabelProps={{
@@ -113,8 +117,8 @@ function App() {
           </div>
           <div className={classes.form}>
             <CssTextField
-              label="验证码"
-              placeholder="请输入..."
+              label={localize('code')}
+              placeholder={localize('placeholder')}
               fullWidth
               margin="normal"
               InputLabelProps={{
