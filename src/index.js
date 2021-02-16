@@ -3,9 +3,15 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles'
+import { zhCN } from '@material-ui/core/locale'
+
+const theme = createMuiTheme({}, zhCN)
 
 ReactDOM.render(
-  <App />,
+  <ThemeProvider theme={theme}>
+    <App />
+  </ThemeProvider>,
   document.getElementById('root')
 )
 
